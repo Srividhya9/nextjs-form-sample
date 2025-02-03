@@ -19,6 +19,9 @@ spec:
         image: ambati2019/nodeapp
         ports:
         - containerPort: 80
+        env:
+          - name: DATABASE_URL
+            value: "mysql://srividhya:Rb_3td@2025@89.233.107.230:3306/Test_db_shadow?useSSL=false"
 
         
 ---
