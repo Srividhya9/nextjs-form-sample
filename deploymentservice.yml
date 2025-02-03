@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: netlify-clone
-        image: your-image-name:latest
+        image: ambati2019/nodeapp
         ports:
         - containerPort: 80
 
