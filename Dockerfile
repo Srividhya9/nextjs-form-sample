@@ -1,20 +1,41 @@
-# Use Node.js as base image
-FROM node:16-alpine AS build
+# Use the official Node.js image as the base image
+FROM node:18 AS builder
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy the package.json and package-lock.json to the container
 COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy all app files
+# Copy the rest of the application code to the container
 COPY . .
 
-# Build app (for React)
+# Build the Next.js app
 RUN npm run build
 
-# Expose port 80
-EXPOSE 80
+# Use a smaller image for the final production environment
+FROM node:18-slim
+
+# Set the working directory for the production container
+WORKDIR /app
+
+# Copy only the build output and necessary files from the builder stage
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package.json /app/package-lock.json /app/
+
+# Install only production dependencies
+RUN npm install --production
+
+# Expose the port that the app will run on
+EXPOSE 3000
+
+# Set the environment variable to indicate production environment
+ENV NODE_ENV=production
+
+# Start the Next.js app in production mode
+CMD ["npm", "start"]
 
 
