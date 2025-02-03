@@ -1,3 +1,4 @@
+
 # Use the official Node.js image as the base image
 FROM node:18 AS builder
 
@@ -25,6 +26,9 @@ WORKDIR /app
 # Copy only the build output and necessary files from the builder stage
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/package.json /app/package-lock.json /app/
+
+# Copy the index.js file from your local directory into the Docker container (if it's not already included)
+COPY index.js /app/index.js
 
 # Install only production dependencies
 RUN npm install --production
