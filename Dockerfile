@@ -1,14 +1,24 @@
-FROM node:latest
+# Use Node.js as base image
+FROM node:16-alpine AS build
 
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-COPY package.json ./
-
+# Copy package.json and install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
-RUN npm install -g netlify-cli
 
+# Copy all app files
 COPY . .
 
-EXPOSE 4000
-CMD ["npm", "start"]
+# Build app (for React)
+RUN npm run build
 
+# Use Nginx to serve the static files
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
