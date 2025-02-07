@@ -5,7 +5,7 @@ metadata:
   labels:
     app: netlify-clone
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: netlify-clone
@@ -20,8 +20,31 @@ spec:
         ports:
         - containerPort: 80
         env:
-          - name: DATABASE_URL
-            value: "mysql://srividhya:Rb_3td@2025@89.233.107.230:3306/Test_db_shadow?useSSL=false"
+          - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database_host
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database_port
+            - name: DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database_name
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
 
         
 ---
