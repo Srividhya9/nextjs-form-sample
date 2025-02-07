@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  database_host: "89.233.107.230"
+  database_port: "3000"
+  database_name: "Test_db_shadow"
