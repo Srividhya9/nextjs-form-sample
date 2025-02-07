@@ -21,30 +21,30 @@ spec:
         - containerPort: 80
         env:
           - name: DATABASE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: database_host
-            - name: DATABASE_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: database_port
-            - name: DATABASE_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: database_name
-            - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: username
-            - name: DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: password
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                 key: database_host
+          - name: DATABASE_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: database_port
+          - name: DATABASE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: database_name
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: password
 
         
 ---
