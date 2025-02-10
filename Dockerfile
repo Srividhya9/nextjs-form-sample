@@ -1,6 +1,6 @@
 
 # Use the official Node.js image as the base image
-FROM node:18 AS builder
+FROM node:18-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,32 +14,32 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
+# Generate Prisma Client (important for DB connection)
+RUN npx prisma generate
+
 # Build the Next.js app
 RUN npm run build
 
 # Use a smaller image for the final production environment
-FROM node:18-slim
+FROM node:18-alpine AS runner
 
 # Set the working directory for the production container
 WORKDIR /app
 
 # Copy only the build output and necessary files from the builder stage
+COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/package.json /app/package-lock.json /app/
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma ./prisma
 
-# Copy the index.js file from your local directory into the Docker container (if it's not already included)
-COPY index.js /app/index.js
-
-# Install only production dependencies
-RUN npm install --production
+# Set environment variables
+ENV NODE_ENV=production
 
 # Expose the port that the app will run on
 EXPOSE 3000
 
-# Set the environment variable to indicate production environment
-ENV NODE_ENV=production
-
-# Start the Next.js app in production mode
-CMD ["node", "index.js"]
+# Start the Next.js application
+CMD ["npm", "run", "start"]
 
 
