@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netlify-clone-deployment
+  name: nextjs-deployment
   labels:
-    app: netlify-clone
+    app: nextjs
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: netlify-clone
+      app: nextjs
   template:
     metadata:
       labels:
-        app: netlify-clone
+        app: nextjs
     spec:
       containers:
-      - name: netlify-clone
+      - name: nextjs
         image: ambati2019/nextjs-app
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         env:
           - name: DATABASE_HOST
             valueFrom:
@@ -45,6 +45,10 @@ spec:
               secretKeyRef:
                 name: mysql-secret
                 key: password
+      resources:
+        limits:
+           memory: "512Mi"
+           cpu: "500m        
 
         
 ---
@@ -52,10 +56,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: netlify-clone-service
+  name: nextjs-service
 spec:
   selector:
-    app: netlify-clone
+    app: nextjs
   ports:
     - protocol: TCP
       port: 80
