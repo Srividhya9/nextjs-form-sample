@@ -1,6 +1,7 @@
-FROM node:18-bullseye
+# Build stage
+FROM node:18-bullseye AS build
 
-# Install OpenSSL
+# Install OpenSSL if required by your dependencies
 RUN apt-get update && apt-get install -y openssl
 
 # Set working directory
@@ -10,13 +11,22 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the app
+# Copy all app files
 COPY . .
-RUN npm run build
-# Generate Prisma client
-RUN npx prisma generate
-RUN npx prisma migrate deploy
 
-# Expose port and set start command
+# Build Next.js app and generate Prisma client
+RUN npm run build
+RUN npx prisma generate
+
+# Production stage
+FROM node:18-bullseye
+
+# Set working directory
+WORKDIR /app
+
+# Copy from build stage
+COPY --from=build /app /app
+
+# Expose port and run the app
 EXPOSE 3000
 CMD ["npm", "start"]
