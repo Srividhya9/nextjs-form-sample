@@ -15,6 +15,7 @@ COPY . .
 RUN npm run build
 # Generate Prisma client
 RUN npx prisma generate
+npx prisma migrate deploy
 
 # Expose port and set start command
 EXPOSE 3000
