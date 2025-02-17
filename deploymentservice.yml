@@ -15,42 +15,41 @@ spec:
         app: nextjs
     spec:
       containers:
-      - name: nextjs
-        image: ambati2019/nextjs-app
-        ports:
-        - containerPort: 3000
-        env:
-          - name: DATABASE_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: mysql-config
-                 key: database_host
-          - name: DATABASE_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: mysql-config
-                key: database_port
-          - name: DATABASE_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: mysql-config
-                key: database_name
-          - name: DATABASE_USER
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: username
-          - name: DATABASE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: password
+        - name: nextjs
+          image: ambati2019/nextjs-app
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database_host
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database_port
+            - name: DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: database_name
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
       resources:
         limits:
-           memory: "512Mi"
-           cpu: "500m        
+          memory: "512Mi"
+          cpu: "500m"   # Fixed the missing quote here
 
-        
 ---
 
 apiVersion: v1
@@ -63,5 +62,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
-  type: nodeport
+      targetPort: 3000  # Fixed this to 3000 as per your container port
+  type: NodePort
+         
+        
