@@ -45,10 +45,13 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
-      resources:
-        limits:
-          memory: "512Mi"
-          cpu: "500m"   # Fixed the missing quote here
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
 
 ---
 
@@ -62,7 +65,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000  # Fixed this to 3000 as per your container port
+      targetPort: 3000  # Ensure this matches the container's exposed port
   type: NodePort
-         
-        
