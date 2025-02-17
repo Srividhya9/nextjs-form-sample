@@ -15,6 +15,7 @@ RUN npm install
 COPY . .
 
 # Generate Prisma Client (important for DB connection)
+RUN npm install
 RUN npx prisma generate
 
 # Build the Next.js app
