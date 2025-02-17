@@ -15,6 +15,8 @@ RUN npm install
 COPY . .
 COPY .env .env
 
+COPY prisma ./prisma
+
 # Generate Prisma Client (important for DB connection)
 RUN npm install
 RUN npx prisma generate
