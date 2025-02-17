@@ -1,7 +1,7 @@
-FROM node:18-alpine
+FROM node:18-bullseye
 
-# Install OpenSSL 3
-RUN apk add --no-cache openssl
+# Install OpenSSL
+RUN apt-get update && apt-get install -y openssl
 
 # Set working directory
 WORKDIR /app
