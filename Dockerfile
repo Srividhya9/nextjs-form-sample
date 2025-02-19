@@ -19,5 +19,5 @@ RUN npx prisma migrate deploy
 
 # Expose port and set start command
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
 
