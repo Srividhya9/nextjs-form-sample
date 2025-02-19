@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start & wait",
     "prisma:deploy": "prisma migrate dev",
     "netlify-build": "npm run prisma:deploy && npm run build",
     "vercel-build": "npm run prisma:deploy && npm run build"
