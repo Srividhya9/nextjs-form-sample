@@ -17,7 +17,7 @@ RUN npm run build
 RUN npx prisma generate
 RUN npx prisma migrate deploy
 
-# Expose port and set start command
+# Expose port and set start command..
 EXPOSE 3000
 CMD ["npm", "run", "start"]
 
