@@ -13,7 +13,7 @@ const Blog: React.FC<Props> = props => {
   return (
     <Layout>
       <div className="page">
-        <h1>My Blog</h1>
+        <h1>My Blog 1</h1>
         <main>
           {props.feed.map(post => (
             <div key={post.id} className="post">
